@@ -75,7 +75,6 @@ lval* lval_pop(lval* v, int i) {
   lval* x = v->cell[i];
 
   memmove(&v->cell[i], &v->cell[i + 1], sizeof(lval*) * (v->count - i - 1));
-
   v->count--;
 
   v->cell = realloc(v->cell, sizeof(lval*) * v->count);
@@ -131,8 +130,7 @@ lval* builtin_op(lval* a, char* op) {
 
   lval* x = lval_pop(a, 0);
 
-  if ((strcmp(op, "-") == 0) && a->count == 0)
-    x->num = -x->num;
+  if ((strcmp(op, "-") == 0) && a->count == 0) x->num = -x->num;
 
   while (a->count > 0) {
     lval* y = lval_pop(a, 0);
@@ -202,13 +200,13 @@ lval* lval_read(mpc_ast_t* t) {
     if (strcmp(t->children[i]->contents, ")") == 0) continue;
     if (strcmp(t->children[i]->contents, "}") == 0) continue;
     if (strcmp(t->children[i]->contents, "{") == 0) continue;
-    if (strcmp(t->children[i]->tag, "regex") == 0)  continue;
+    if (strcmp(t->children[i]->tag, "regex") == 0) continue;
     x = lval_add(x, lval_read(t->children[i]));
   }
   return x;
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char* argv[]) {
   mpc_parser_t* Number = mpc_new("number");
   mpc_parser_t* Symbol = mpc_new("symbol");
   mpc_parser_t* Sexpr = mpc_new("sexpr");
